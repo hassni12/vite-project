@@ -1,246 +1,217 @@
 /* CSS reset { */
-  body,
-  div,
-  h1,
-  button,
-  p {
-    margin: 0;
-    padding: 0;
-  }
-  button {
-    font-family: inherit;
-    font-size: inherit;
-    font-style: inherit;
-    font-weight: 700;
-  }
-  a:active,
-  a:focus {
-    outline: 0;
-  }
-  /* } */
+body,
+div,
+h1,
+button,
+p {
+  margin: 0;
+  padding: 0;
+}
+button {
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: 700;
+}
+a:active,
+a:focus {
+  outline: 0;
+}
+/* } */
+
+body,
+input,
+select,
+textarea {
+  font: 18px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body {
   
-  body,
-  input,
-  select,
-  textarea {
-    font: 18px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-  body {
-    background: #ddd
-      url(https://subtlepatterns.com/patterns/texturetastic_gray.png);
-  }
+  background: #ddd 
+  url(https://subtlepatterns.com/patterns/texturetastic_gray.png);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #bbb;
+}
+
+h1,
+a {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+#sm {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lever button {
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.25);
+}
+.group,
+.reel,
+.lever {
+  display: inline-block;
   
-  h1 {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 12px;
-    font-weight: normal;
-    color: #bbb;
-  }
+}
+.group,
+.lever {
+  background: rgba(26, 26, 26, 1);
+  border: 5.1px solid rgba(255, 255, 255, 1);
+}
+
+.group {
+  border-radius: 30px;
+  padding: 12px 0 15px 15px;
   
-  h1,
-  a {
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  
-  #sm {
-    position: relative;
-  
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .lever button {
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.25);
-  }
-  .group,
-  .reel,
-  .lever {
-    display: inline-block;
-  }
-  .group,
-  .lever {
-    background: linear-gradient(
-      180deg,
-      #efa500 -17.2%,
-      #9a4d08 -1.94%,
-      #b17128 -0.55%,
-      #c79145 0.84%,
-      #d8ad5d 2.23%,
-      #e7c371 3.62%,
-      #f2d480 6.39%,
-      #f9df8a 9.17%,
-      #fee690 11.94%,
-      #ffe892 21.66%,
-      #fee691 27.21%,
-      #fadf8c 28.6%,
-      #f3d483 29.98%,
-      #e9c377 31.37%,
-      #cd9153 32.76%,
-      #ba713b 34.15%,
-      #912a07 35.53%,
-      #b26401 46.64%,
-      #ba7200 49.41%,
-      #be7808 50.8%,
-      #c78619 52.19%,
-      #cd8f24 54.96%,
-      #d1952b 59.13%,
-      #d2962d 70.23%,
-      #d1942c 73%,
-      #cc8d28 74.39%,
-      #b67117 75.78%,
-      #994900 77.17%,
-      #8b3801 88.27%,
-      #ecbe48 120.19%
-    );
-  
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 );
-  }
-  
-  .group {
-    border-radius: 30px;
-    padding: 12px 0 15px 15px;
-    /* margin-top: calc(30% + 8px); Adjust margin-top based on image container height and desired spacing */
-  }
-  
-  .reel {
-    background:rgba(84, 84, 86, 1);
-   
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
-  
-    text-align: center;
-    float: left;
-    padding: 0 10px;
-    width: 10px;
-    height: 50px;
-    overflow: hidden;
-    margin-right: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3) inset,
-      0 0px 1px rgba(0, 0, 0, 0.2) inset;
-  }
-  .reel div {
-    position: relative;
-    top: -48px;
-  }
-  .reel p {
-    font-size: x-large;
-    height: 60px;
-    margin-top: 4px;
-  }
-  .reel p:nth-child(1) {
-    color: rgb(255, 255, 255);
-  }
-  .reel p:nth-child(2) {
-    color: rgb(255, 255, 255);
-  }
-  .reel p:nth-child(3) {
-    color: rgb(255, 255, 255);
-  }
-  
-  .lever {
-    float: right;
-    padding-right: 20px;
-  }
-  .lever button {
-    text-align: center;
-    border-radius: 10px;
-    line-height: 100px;
-    width: 100px;
-    border: none;
-    font-size: 1.8em;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-    background: rgb(252, 255, 244);
-    background: -moz-linear-gradient(
-      top,
-      rgba(252, 255, 244, 1) 0%,
-      rgba(233, 233, 206, 1) 100%
-    );
-    background: -webkit-gradient(
-      linear,
-      left top,
-      left bottom,
-      color-stop(0%, rgba(252, 255, 244, 1)),
-      color-stop(100%, rgba(233, 233, 206, 1))
-    );
-    background: -webkit-linear-gradient(
-      top,
-      rgba(252, 255, 244, 1) 0%,
-      rgba(233, 233, 206, 1) 100%
-    );
-    background: -o-linear-gradient(
-      top,
-      rgba(252, 255, 244, 1) 0%,
-      rgba(233, 233, 206, 1) 100%
-    );
-    background: -ms-linear-gradient(
-      top,
-      rgba(252, 255, 244, 1) 0%,
-      rgba(233, 233, 206, 1) 100%
-    );
-    background: linear-gradient(
-      top,
-      rgba(252, 255, 244, 1) 0%,
-      rgba(233, 233, 206, 1) 100%
-    );
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 );
-  }
-  .lever button:active {
-    color: #900;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    margin: 2px 0 -2px;
-  }
-  
-  .msg {
-    position: absolute;
-    text-align: center; /* Align text to center horizontally */
-    font-weight: 700;
-    top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px; /* Adjust font size as needed */
-    color: #ffb800; /* Adjust text color as needed */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better contrast */
-    max-width: 100%; /* Set the maximum width for wrapping */
-    word-wrap: break-word; /* Enable word wrapping */
-    line-height: 30px;
-  }
-  
-  a {
-    color: #222cff;
-    margin-top: 15px;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: #ff4c00;
-  }
-  
-  button {
-    padding: 15px 60px; /* Adjust padding as needed */
-    font-size: 16px; /* Adjust font size as needed */
-    background-color: #ff3333; /* Light gray */
-    color: #ffffff; /* Adjust text color as needed */
-    border: 1px solid #ccc; /* Adjust border color as needed */
-    border-radius: 25px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #f88181; /* Lighter gray on hover */
-  }
-  
-  .image-container {
-    position: relative;
-  }
-  
-  .image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  
+
+  /* margin-top: calc(30% + 8px); Adjust margin-top based on image container height and desired spacing */
+}
+
+.reel {
+  /* background:rgba(84, 84, 86, 1); */
+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+
+  text-align: center;
+  float: left;
+  padding: 0 10px;
+  width: 10px;
+  height: 50px;
+  overflow: hidden;
+  margin-right: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3) inset,
+    0 0px 1px rgba(0, 0, 0, 0.2) inset;
+}
+.reel div {
+  position: relative;
+  top: -48px;
+}
+.reel p {
+  font-size: 2rem;
+  font-weight: 800;
+  height: 60px;
+  margin-top: 4px;
+}
+.reel p:nth-child(1) {
+  color: rgb(255, 255, 255);
+}
+.reel p:nth-child(2) {
+  color: rgb(255, 255, 255);
+}
+.reel p:nth-child(3) {
+  color: rgb(255, 255, 255);
+}
+
+.lever {
+  float: right;
+  padding-right: 20px;
+}
+.lever button {
+  text-align: center;
+  border-radius: 10px;
+  line-height: 100px;
+  width: 100px;
+  border: none;
+  font-size: 1.8em;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  background: rgb(252, 255, 244);
+  background: -moz-linear-gradient(
+    top,
+    rgba(252, 255, 244, 1) 0%,
+    rgba(233, 233, 206, 1) 100%
+  );
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, rgba(252, 255, 244, 1)),
+    color-stop(100%, rgba(233, 233, 206, 1))
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(252, 255, 244, 1) 0%,
+    rgba(233, 233, 206, 1) 100%
+  );
+  background: -o-linear-gradient(
+    top,
+    rgba(252, 255, 244, 1) 0%,
+    rgba(233, 233, 206, 1) 100%
+  );
+  background: -ms-linear-gradient(
+    top,
+    rgba(252, 255, 244, 1) 0%,
+    rgba(233, 233, 206, 1) 100%
+  );
+  background: linear-gradient(
+    top,
+    rgba(252, 255, 244, 1) 0%,
+    rgba(233, 233, 206, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 );
+}
+.lever button:active {
+  color: #900;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  margin: 2px 0 -2px;
+}
+
+.msg {
+  position: absolute;
+  text-align: center; /* Align text to center horizontally */
+  font-weight: 700;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px; /* Adjust font size as needed */
+  color: #ffb800; /* Adjust text color as needed */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better contrast */
+  max-width: 100%; /* Set the maximum width for wrapping */
+  word-wrap: break-word; /* Enable word wrapping */
+  line-height: 30px;
+}
+
+a {
+  color: #222cff;
+  margin-top: 15px;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff4c00;
+}
+
+button {
+  padding: 15px 60px; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
+  background-color: #ff3333; /* Light gray */
+  color: #ffffff; /* Adjust text color as needed */
+  border: 1px solid #ccc; /* Adjust border color as needed */
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f88181; /* Lighter gray on hover */
+}
+
+.image-container {
+  position: relative;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
