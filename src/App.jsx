@@ -104,7 +104,6 @@ const App = () => {
   };
   useEffect(() => {
     if (winner !== null) {
-      console.log(winner, "wstat");
       action();
     }
   }, [winner]);
@@ -146,7 +145,6 @@ const App = () => {
   };
   return (
     <>
-      {" "}
       {showConfetti && !isSpinning && (
         <Confetti width={width} height={WINDOWHEIGHT} tweenDuration={0.01} />
       )}
@@ -248,7 +246,13 @@ const App = () => {
                   </li>
                 ))
               ) : (
-                <p>No any winner data</p>
+                <p   style={{
+                  fontFamily: "Raleway",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "21.13px",
+                  textAlign: "left",
+                }}>winner not found</p>
               )}
             </ul>
           </div>
