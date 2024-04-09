@@ -99,7 +99,6 @@ const App = () => {
       requestAnimationFrame(animate);
     } else {
       setIsSpinning(false);
-      console.log(winner, "w");
       setMsg(winner?.data?.full_name || winner?.message);
     }
   };
@@ -133,16 +132,14 @@ const App = () => {
         setWinner(data?.data);
       },
       onError: async (data) => {
-        console.log(data.response.data);
         setWinner(data?.response?.data);
-        setShowConfetti(true);
+        // setShowConfetti(true);
       },
     });
 
     return mutation;
   };
   const { mutate } = useGetWinnerMutation();
-  console.log(winner, "winner");
   const handleClick = async () => {
     setShowConfetti(false);
     mutate();
