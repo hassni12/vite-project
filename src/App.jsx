@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import image from "./assets/OBJECTS.png";
 import "./App.css";
 import {
+  checkWinnerWeekly,
   fetchWinner,
   winnerLisitng,
   winnerweeklyLisitng,
@@ -43,41 +44,60 @@ const App = () => {
           });
         }
       },
-      onError: async (data) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data?.response?.data?.message || "Something went wrong!",
-        });
+      onError: async () => {
+        setIsStart(true);
+
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Oops...",
+        //   text: data?.response?.data?.message || "Something went wrong!",
+        // });
       },
     });
 
     return mutation;
   };
   const { mutate: mutateWeek } = useFetchWinnerWeekly();
+  // checkWinnerWeekly
+
+  const useFetchCheckWinnerMutation = () =>
+    useQuery({
+      queryKey: ["winner-check-listing-all"],
+      queryFn: () => checkWinnerWeekly(),
+      refetchOnWindowFocus: false,
+    });
+  const {
+    data,
+    isLoading: isCheckLoading,
+    isError: isCheckError,
+  } = useFetchCheckWinnerMutation();
   useEffect(() => {
     const handleStartCompetition = () => {
-      Swal.fire({
-        title: "Are you sure you want to start the competition?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Initiate Competition",
-                cancelButtonText: "Cancel",
-        customClass: {
-          confirmButton: "start-competition-btn",
-        },
-        showCloseButton: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          mutateWeek();
-        }
-      });
+      if (!data?.data?.is_start) {
+        Swal.fire({
+          title: "Are you sure you want to start the competition?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, initiate competition",
+          cancelButtonText: "Cancel",
+          customClass: {
+            confirmButton: "start-competition-btn",
+          },
+          showCloseButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            mutateWeek(); 
+          }
+        });
+      } else {
+        setIsStart(true);
+      }
     };
 
-    handleStartCompetition(); // Call the function to open the modal when the component mounts
-  }, []);
-
-
+    if (!isCheckLoading && !isCheckError) {
+      handleStartCompetition(); 
+    }
+  }, [data, isCheckLoading, isCheckError]);
   const useFetchWinnerMutation = () =>
     useQuery({
       queryKey: ["winner-listing-all"],
@@ -158,7 +178,6 @@ const App = () => {
     if (t < tMax) {
       requestAnimationFrame(animate);
     } else {
-    console.log("winner", winner);
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
       setPhone(`*******${winner?.data?.phone.slice(-4)}` || "");
@@ -347,7 +366,7 @@ const App = () => {
                   <p
                     style={{
                       fontFamily: "Raleway",
-                      fontSize: "16px",
+                      fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
                       textAlign: "left",
@@ -407,7 +426,7 @@ const App = () => {
                   <p
                     style={{
                       fontFamily: "Raleway",
-                      fontSize: "16px",
+                      fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
                       textAlign: "left",
@@ -467,7 +486,7 @@ const App = () => {
                   <p
                     style={{
                       fontFamily: "Raleway",
-                      fontSize: "16px",
+                      fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
                       textAlign: "left",

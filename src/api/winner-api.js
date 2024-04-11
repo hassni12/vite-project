@@ -14,3 +14,7 @@ export const fetchWinner = async () => {
   export const winnerweeklyLisitng = async () => {
     return await axios.post(`${URL_API}/api/start_competition_weekly`);
   };
+
+  export const checkWinnerWeekly = async () => {
+    return await axios.post(`${URL_API}/api/check_start_competition_weekly`);
+  };
