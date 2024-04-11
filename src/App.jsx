@@ -54,7 +54,7 @@ const App = () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: data.message || "Something went wrong!",
+          text: data?.response?.data?.message || "Something went wrong!",
         });
       },
     });
@@ -183,7 +183,7 @@ const App = () => {
     } else {
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
-      setPhone(winner?.data?.phone.slice(-4) || "");
+      setPhone(`*******${winner?.phone.slice(-4)}` || "");
       setGift(winner?.data?.gift || "");
     }
   };
