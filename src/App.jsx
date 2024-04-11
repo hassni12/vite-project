@@ -198,7 +198,10 @@ const App = () => {
     const mutation = useMutation({
       mutationFn: fetchWinner,
       onSuccess: async (data) => {
-        queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
+        }, 4000);
+        // queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
         setShowConfetti(true);
         setWinner(data?.data);
       },
