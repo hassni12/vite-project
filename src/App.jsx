@@ -86,7 +86,7 @@ const App = () => {
           showCloseButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            mutateWeek(); 
+            mutateWeek();
           }
         });
       } else {
@@ -95,7 +95,7 @@ const App = () => {
     };
 
     if (!isCheckLoading && !isCheckError) {
-      handleStartCompetition(); 
+      handleStartCompetition();
     }
   }, [data, isCheckLoading, isCheckError]);
   const useFetchWinnerMutation = () =>
@@ -180,7 +180,8 @@ const App = () => {
     } else {
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
-      setPhone(`*******${winner?.data?.phone.slice(-4)}` || "");
+
+      setPhone(`*******${winner?.data?.phone.slice(-4) || ""}`);
       setGift(winner?.data?.gift || "");
     }
   };
