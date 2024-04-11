@@ -221,7 +221,7 @@ const App = () => {
         <Confetti width={width} height={WINDOWHEIGHT} tweenDuration={0.01} />
       )}
       <div id="sm">
-        <h1>Slot Machine</h1>
+        <h1>Fusteka Group</h1>
         <div className="image-container">
           <img src={image} alt="Your Image" className="image" />
 
@@ -267,18 +267,7 @@ const App = () => {
         }}
       >
         <div
-          style={{
-            width: "35%",
-            height: "159px",
-            gap: "0px",
-            borderRadius: "10px",
-            opacity: "0px",
-            position: "absolute",
-            backgroundColor: "rgba(239, 239, 239, 1)",
-            border: "3px solid rgba(26, 26, 26, 1)",
-            padding: "0.5em 0.5em 0.5em 0.5em",
-            boxShadow: "0px 8px 4px rgba(0, 0, 0, 0.15)",
-          }}
+          className="responsiveDiv"
         >
           <div
             style={{

@@ -242,3 +242,21 @@ button:hover {
 .swal2-title{
   font-size: 1.3rem;
 }
+.responsiveDiv {
+  width: 35%;
+  height: 159px;
+  gap: 0px;
+  border-radius: 10px;
+  opacity: 0px;
+  position: absolute;
+  background-color: rgba(239, 239, 239, 1);
+  border: 3px solid rgba(26, 26, 26, 1);
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .responsiveDiv {
+    width: 70%;
+  }
+}
