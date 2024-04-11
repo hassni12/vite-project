@@ -169,7 +169,7 @@ a {
   position: absolute;
   text-align: center; /* Align text to center horizontally */
   font-weight: 700;
-  top: 65%;
+  top: 63%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px; /* Adjust font size as needed */
@@ -179,7 +179,31 @@ a {
   word-wrap: break-word; /* Enable word wrapping */
   line-height: 30px;
 }
-
+.other-paragraphs {
+  position: absolute;
+  text-align: center; /* Align text to center horizontally */
+  top: 78%;
+  /* left: 50%; */
+  font-weight: 700;
+  background: -webkit-linear-gradient(#ffb800,#818c96);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: 30%; /* Set the maximum width for wrapping */
+  word-wrap: break-word; /* Enable word wrapping */
+  font-size: 17px; /* Adjust font size as needed */
+  margin-top: 1rem; /* Adjust margin top as needed */
+}
+.other-paragraphs-phone {
+  position: absolute;
+  text-align: center; /* Align text to center horizontally */
+  top: 71%;
+  /* left: 50%; */
+  font-weight: 700;
+  background: -webkit-linear-gradient(#ffb800,#aeb9c4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;  font-size: 16px; /* Adjust font size as needed */
+  margin-top: 1rem; /* Adjust margin top as needed */
+}
 a {
   color: #222cff;
   margin-top: 15px;
@@ -214,4 +238,7 @@ button:hover {
   display: block;
   width: 100%;
   height: auto;
+}
+.swal2-title{
+  font-size: 1.3rem;
 }

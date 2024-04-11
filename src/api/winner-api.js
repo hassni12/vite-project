@@ -8,3 +8,8 @@ export const fetchWinner = async () => {
   export const winnerLisitng = async () => {
     return await axios.get(`https://new.fustekaice.com/api/get_winners_of_competitions`);
   };
+
+
+  export const winnerweeklyLisitng = async () => {
+    return await axios.post(`https://new.fustekaice.com/api/start_competition_weekly`);
+  };

@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import image from "./assets/OBJECTS.png";
 import "./App.css";
-import { fetchWinner, winnerLisitng } from "./api/winner-api";
+import {
+  fetchWinner,
+  winnerLisitng,
+  winnerweeklyLisitng,
+} from "./api/winner-api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Confetti from "react-confetti";
-
+import Swal from "sweetalert2";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useWindowSize } from "react-use";
 
@@ -14,6 +18,7 @@ const App = () => {
   const { width, height: WINDOWHEIGHT } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isStart, setIsStart] = useState(false);
 
   useEffect(() => {
     if (showConfetti) {
@@ -24,11 +29,84 @@ const App = () => {
       return () => clearTimeout(timer);
     }
   }, [showConfetti]);
+  // const useFetchWinnerWeekly = () =>
+  //   useQuery({
+  //     queryKey: ["winner-week-listing-all"],
+  //     queryFn: () => winnerweeklyLisitng(),
+  //     refetchOnWindowFocus: false,
+  //   });
+  // const { data, error, isError: weeklyError } = useFetchWinnerWeekly();
+  const useFetchWinnerWeekly = () => {
+    const mutation = useMutation({
+      mutationFn: winnerweeklyLisitng,
+      onSuccess: async (data) => {
+        if (data?.data?.is_start) {
+          setIsStart(true);
+        } else if (data?.data?.is_start === false) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "The competition has not started yet!",
+          });
+        }
+      },
+      onError: async (data) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: data.message || "Something went wrong!",
+        });
+      },
+    });
+
+    return mutation;
+  };
+  const { mutate: mutateWeek } = useFetchWinnerWeekly();
+  useEffect(() => {
+    const handleStartCompetition = () => {
+      Swal.fire({
+        title: "Are you sure you want to start the competition?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, start competition",
+        cancelButtonText: "Cancel",
+        customClass: {
+          confirmButton: "start-competition-btn",
+        },
+        showCloseButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          mutateWeek();
+        }
+      });
+    };
+
+    handleStartCompetition(); // Call the function to open the modal when the component mounts
+  }, []);
+  // useEffect(() => {
+  //   if (data?.data?.is_start) {
+  //     setIsStart(true);
+  //   } else if (data?.data?.is_start === false) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "The competition has not started yet!",
+  //     });
+  //   } else if (isError) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: error.message || "Something went wrong!",
+  //     });
+  //   }
+  // }, [data, weeklyError, error]);
+
   const useFetchWinnerMutation = () =>
     useQuery({
       queryKey: ["winner-listing-all"],
       queryFn: () => winnerLisitng(),
       refetchOnWindowFocus: false,
+      enabled: isStart,
     });
   const {
     data: winnerListing,
@@ -64,6 +142,9 @@ const App = () => {
     ];
   }
   const [msg, setMsg] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gift, setGift] = useState("");
+
   const reelsRefs = useRef([]);
   const speeds = useRef([]);
   const r = useRef([]);
@@ -73,6 +154,8 @@ const App = () => {
     if (isSpinning) return;
     setIsSpinning(true);
     setMsg("Spinning...");
+    setPhone("");
+    setGift("");
     start.current = performance.now();
     const codeLength =
       winner && winner.data && winner.data.code ? winner.data.code.length : 10;
@@ -100,26 +183,17 @@ const App = () => {
     } else {
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
+      setPhone(winner?.data?.phone.slice(-4) || "");
+      setGift(winner?.data?.gift || "");
     }
   };
+
   useEffect(() => {
     if (winner !== null) {
       action();
     }
   }, [winner]);
-  // useEffect(() => {
-  //     const fetchWinnerData = async () => {
-  //       try {
-  //         const response = await fetchWinner();
-  //         // console.log(response, "resp");
-  //         setWinner(response?.data);
-  //       } catch (error) {
-  //         setWinner(error?.response?.data);
-  //       }
-  //     };
 
-  //     fetchWinnerData();
-  //   }, []);
   const useGetWinnerMutation = () => {
     const queryClient = useQueryClient();
 
@@ -152,7 +226,18 @@ const App = () => {
         <h1>Slot Machine</h1>
         <div className="image-container">
           <img src={image} alt="Your Image" className="image" />
+
           <p className="msg">{msg}</p>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <p className="other-paragraphs">{gift}</p>
+            <p className="other-paragraphs-phone">{phone}</p>
+          </div>
         </div>
         <div className="group">
           {reels?.map((reel, index) => (
@@ -172,16 +257,20 @@ const App = () => {
           ))}
         </div>
         <div style={{ marginTop: "16px" }}></div>
-        <button onClick={handleClick} disabled={isSpinning}>
-          Start
+        <button onClick={handleClick} disabled={!isStart}>
+          أبدأ
         </button>
       </div>
       <div
-        style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "1rem",
+        }}
       >
         <div
           style={{
-            width: "224px",
+            width: "35%",
             height: "159px",
             gap: "0px",
             borderRadius: "10px",
@@ -196,8 +285,8 @@ const App = () => {
           <div
             style={{
               display: "flex",
-              justifyContent: "start",
-              alignItems: "end",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <p
@@ -211,9 +300,10 @@ const App = () => {
                 padding: "0.3rem 0 0.5rem 0",
               }}
             >
-              Recent Winners
+              قائمة الفائزين{" "}
             </p>
           </div>
+
           <div
             style={{
               height: "1px",
@@ -222,39 +312,194 @@ const App = () => {
               marginBottom: "6px",
             }}
           ></div>
-          <div style={{ overflow: "auto", maxHeight: "120px" }}>
-            <ul style={{ listStyleType: "none", padding: "0", margin: "0" }}>
-              {isLoading ? (
-                <SkeletonTheme baseColor="#b5b5b5" highlightColor="#444">
-                  <p>
-                    <Skeleton count={4} style={{ marginBottom: "12px" }} />
-                  </p>
-                </SkeletonTheme>
-              ) : tableData?.length > 0 ? (
-                tableData?.map((user, index) => (
-                  <li
-                    key={index}
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              overflow: "auto",
+              maxHeight: "120px",
+            }}
+          >
+            <div>
+              <p
+                style={{
+                  fontFamily: "Raleway",
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  lineHeight: "21.13px",
+                  textAlign: "center",
+                }}
+              >
+                أسم الفائز
+              </p>
+              <div
+                style={{
+                  height: "1px",
+                  backgroundColor: "gray",
+                  width: "100%",
+                  marginBottom: "6px",
+                }}
+              ></div>
+              <ul style={{ listStyleType: "none", padding: "0", margin: "0" }}>
+                {isLoading ? (
+                  <SkeletonTheme baseColor="#b5b5b5" highlightColor="#444">
+                    <p>
+                      <Skeleton count={4} style={{ marginBottom: "12px" }} />
+                    </p>
+                  </SkeletonTheme>
+                ) : tableData?.length > 0 ? (
+                  tableData?.map((user, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        fontFamily: "Raleway",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        lineHeight: "21.13px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {user?.full_name}
+                    </li>
+                  ))
+                ) : (
+                  <p
                     style={{
                       fontFamily: "Raleway",
                       fontSize: "16px",
-                      fontWeight: "500",
+                      fontWeight: "600",
                       lineHeight: "21.13px",
                       textAlign: "left",
                     }}
                   >
-                    {user?.full_name}
-                  </li>
-                ))
-              ) : (
-                <p   style={{
+                    winner not found
+                  </p>
+                )}
+              </ul>
+            </div>
+
+            <div>
+              <p
+                style={{
                   fontFamily: "Raleway",
                   fontSize: "16px",
-                  fontWeight: "600",
+                  fontWeight: "700",
                   lineHeight: "21.13px",
-                  textAlign: "left",
-                }}>winner not found</p>
-              )}
-            </ul>
+                  textAlign: "center",
+                }}
+              >
+                الجائزة
+              </p>
+              <div
+                style={{
+                  height: "1px",
+                  backgroundColor: "gray",
+                  width: "100%",
+                  marginBottom: "6px",
+                }}
+              ></div>
+              <ul style={{ listStyleType: "none", padding: "0", margin: "0" }}>
+                {isLoading ? (
+                  <SkeletonTheme baseColor="#b5b5b5" highlightColor="#444">
+                    <p>
+                      <Skeleton count={4} style={{ marginBottom: "12px" }} />
+                    </p>
+                  </SkeletonTheme>
+                ) : tableData?.length > 0 ? (
+                  tableData?.map((user, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        fontFamily: "Raleway",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        lineHeight: "21.13px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {user?.gift_ar}
+                    </li>
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      fontFamily: "Raleway",
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      lineHeight: "21.13px",
+                      textAlign: "left",
+                    }}
+                  >
+                    winner not found
+                  </p>
+                )}
+              </ul>
+            </div>
+
+            <div>
+              <p
+                style={{
+                  fontFamily: "Raleway",
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  lineHeight: "21.13px",
+                  textAlign: "center",
+                }}
+              >
+                رقم الهاتف
+              </p>
+              <div
+                style={{
+                  height: "1px",
+                  backgroundColor: "gray",
+                  width: "100%",
+                  marginBottom: "6px",
+                }}
+              ></div>
+              <ul style={{ listStyleType: "none", padding: "0", margin: "0" }}>
+                {isLoading ? (
+                  <SkeletonTheme baseColor="#b5b5b5" highlightColor="#444">
+                    <p>
+                      <Skeleton count={4} style={{ marginBottom: "12px" }} />
+                    </p>
+                  </SkeletonTheme>
+                ) : tableData?.length > 0 ? (
+                  tableData?.map((user, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        fontFamily: "Raleway",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        lineHeight: "21.13px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {`*******${user?.phone.slice(-4)}`}
+                    </li>
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      fontFamily: "Raleway",
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      lineHeight: "21.13px",
+                      textAlign: "left",
+                    }}
+                  >
+                    winner not found
+                  </p>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
