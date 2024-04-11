@@ -29,13 +29,6 @@ const App = () => {
       return () => clearTimeout(timer);
     }
   }, [showConfetti]);
-  // const useFetchWinnerWeekly = () =>
-  //   useQuery({
-  //     queryKey: ["winner-week-listing-all"],
-  //     queryFn: () => winnerweeklyLisitng(),
-  //     refetchOnWindowFocus: false,
-  //   });
-  // const { data, error, isError: weeklyError } = useFetchWinnerWeekly();
   const useFetchWinnerWeekly = () => {
     const mutation = useMutation({
       mutationFn: winnerweeklyLisitng,
@@ -68,8 +61,8 @@ const App = () => {
         title: "Are you sure you want to start the competition?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, start competition",
-        cancelButtonText: "Cancel",
+        confirmButtonText: "Initiate Competition",
+                cancelButtonText: "Cancel",
         customClass: {
           confirmButton: "start-competition-btn",
         },
@@ -83,23 +76,7 @@ const App = () => {
 
     handleStartCompetition(); // Call the function to open the modal when the component mounts
   }, []);
-  // useEffect(() => {
-  //   if (data?.data?.is_start) {
-  //     setIsStart(true);
-  //   } else if (data?.data?.is_start === false) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "The competition has not started yet!",
-  //     });
-  //   } else if (isError) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: error.message || "Something went wrong!",
-  //     });
-  //   }
-  // }, [data, weeklyError, error]);
+
 
   const useFetchWinnerMutation = () =>
     useQuery({
@@ -181,9 +158,10 @@ const App = () => {
     if (t < tMax) {
       requestAnimationFrame(animate);
     } else {
+    console.log("winner", winner);
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
-      setPhone(`*******${winner?.phone.slice(-4)}` || "");
+      setPhone(`*******${winner?.data?.phone.slice(-4)}` || "");
       setGift(winner?.data?.gift || "");
     }
   };
