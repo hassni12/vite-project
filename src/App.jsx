@@ -369,7 +369,7 @@ const App = () => {
                       fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
-                      textAlign: "left",
+                      textAlign: "center",
                     }}
                   >
                     winner not found
@@ -429,7 +429,7 @@ const App = () => {
                       fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
-                      textAlign: "left",
+                      textAlign: "center",
                     }}
                   >
                     winner not found
@@ -489,7 +489,7 @@ const App = () => {
                       fontSize: "12px",
                       fontWeight: "600",
                       lineHeight: "21.13px",
-                      textAlign: "left",
+                      textAlign: "center",
                     }}
                   >
                     winner not found
