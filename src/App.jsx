@@ -89,7 +89,7 @@ const App = () => {
             mutateWeek();
           }
         });
-      } 
+      }
       // else {
       //   setIsStart(true);
       // }
@@ -121,17 +121,17 @@ const App = () => {
       }
     }
   }, [isError, isSuccess, winnerListing]);
-  
+
   const updateDataGradually = (data, index) => {
     if (index < data.length) {
       setTimeout(() => {
-        setTableData(prevData => {
+        setTableData((prevData) => {
           const newData = [...prevData];
           newData[index] = data[index];
           return newData;
         });
         updateDataGradually(data, index + 1);
-      }, 3000); 
+      }, 3000);
     }
   };
 
@@ -159,7 +159,6 @@ const App = () => {
   const [msg, setMsg] = useState("");
   const [phone, setPhone] = useState("");
   const [gift, setGift] = useState("");
-
   const reelsRefs = useRef([]);
   const speeds = useRef([]);
   const r = useRef([]);
@@ -198,7 +197,6 @@ const App = () => {
     } else {
       setIsSpinning(false);
       setMsg(winner?.data?.full_name || winner?.message);
-
       setPhone(`*******${winner?.data?.phone.slice(-4) || ""}`);
       setGift(winner?.data?.gift || "");
     }
@@ -216,8 +214,7 @@ const App = () => {
     const mutation = useMutation({
       mutationFn: fetchWinner,
       onSuccess: async (data) => {
-          queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
-     
+        queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
         setShowConfetti(true);
         setWinner(data?.data);
       },
@@ -275,9 +272,7 @@ const App = () => {
           ))}
         </div>
         <div style={{ marginTop: "16px" }}></div>
-        <button onClick={handleClick} >
-          أبدأ
-        </button>
+        <button onClick={handleClick}>أبدأ</button>
       </div>
       <div
         style={{
@@ -286,9 +281,7 @@ const App = () => {
           padding: "1rem",
         }}
       >
-        <div
-          className="responsiveDiv"
-        >
+        <div className="responsiveDiv">
           <div
             style={{
               display: "flex",
@@ -429,7 +422,7 @@ const App = () => {
                         textAlign: "center",
                       }}
                     >
-                      {user?.gift_ar}
+                      {user?.gift_ar ? user.gift_ar : user.gift}
                     </li>
                   ))
                 ) : (
