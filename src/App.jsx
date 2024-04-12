@@ -89,9 +89,10 @@ const App = () => {
             mutateWeek();
           }
         });
-      } else {
-        setIsStart(true);
-      }
+      } 
+      // else {
+      //   setIsStart(true);
+      // }
     };
 
     if (!isCheckLoading && !isCheckError) {
@@ -111,11 +112,28 @@ const App = () => {
     isSuccess,
     isLoading,
   } = useFetchWinnerMutation();
+
   useEffect(() => {
     if (!isError && isSuccess && winnerListing) {
-      setTableData(winnerListing?.data?.data);
+      const newData = winnerListing?.data?.data;
+      if (newData && newData.length > 0) {
+        updateDataGradually(newData, 0);
+      }
     }
   }, [isError, isSuccess, winnerListing]);
+  
+  const updateDataGradually = (data, index) => {
+    if (index < data.length) {
+      setTimeout(() => {
+        setTableData(prevData => {
+          const newData = [...prevData];
+          newData[index] = data[index];
+          return newData;
+        });
+        updateDataGradually(data, index + 1);
+      }, 3000); 
+    }
+  };
 
   const tMax = 5000;
   const height = 210;
@@ -198,10 +216,8 @@ const App = () => {
     const mutation = useMutation({
       mutationFn: fetchWinner,
       onSuccess: async (data) => {
-        setTimeout(() => {
           queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
-        }, 4000);
-        // queryClient.invalidateQueries({ queryKey: ["winner-listing-all"] });
+     
         setShowConfetti(true);
         setWinner(data?.data);
       },
@@ -216,6 +232,7 @@ const App = () => {
   const { mutate } = useGetWinnerMutation();
   const handleClick = async () => {
     setShowConfetti(false);
+    setIsStart(true);
     mutate();
   };
   return (
@@ -258,7 +275,7 @@ const App = () => {
           ))}
         </div>
         <div style={{ marginTop: "16px" }}></div>
-        <button onClick={handleClick} disabled={!isStart}>
+        <button onClick={handleClick} >
           أبدأ
         </button>
       </div>
