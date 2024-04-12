@@ -71,6 +71,7 @@ const App = () => {
     isLoading: isCheckLoading,
     isError: isCheckError,
   } = useFetchCheckWinnerMutation();
+  
   useEffect(() => {
     const handleStartCompetition = () => {
       if (!data?.data?.is_start) {
@@ -136,26 +137,30 @@ const App = () => {
   };
 
   const tMax = 5000;
-  const height = 210;
-  let reels;
-  if (winner && winner?.data && winner?.data?.code) {
-    reels = winner?.data?.code
-      ?.split("")
-      ?.map((digit) => [parseInt(digit), parseInt(digit), parseInt(digit)]);
-  } else {
-    reels = [
-      [3, 3, 3],
-      [4, 4, 4],
-      [5, 5, 5],
-      [6, 6, 6],
-      [7, 7, 7],
-      [8, 8, 8],
-      [9, 9, 9],
-      [0, 0, 0],
-      [2, 2, 2],
-      [1, 1, 1],
-    ];
-  }
+  const height = 196;
+
+  const [reels, setReels] = useState( [
+    [1, 3, 5, 6, 7, 9],
+    [2, 4, 6, 7, 8, 5],
+    [3, 6, 7, 9, 4],
+    [4, 5, 7, 0, 1],
+    [5, 7, 8, 2, 6],
+    [6, 7, 9, 1, 3],
+    [0, 3, 4, 7, 8],
+    [1, 4, 7, 8, 2, 0],
+    [2, 5, 7, 9, 1, 4],
+    [0, 3, 6, 7, 5],
+  ]);
+  useEffect(() => {
+    if (winner && winner?.data && winner?.data?.code) {
+      const codeLength = winner.data.code.length;
+      const newReels = Array.from({ length: codeLength }, () =>
+        Array.from({ length: 4 }, () => Math.floor(Math.random() * 10))
+      );
+      setReels(newReels);
+    }
+  }, [winner]);
+
   const [msg, setMsg] = useState("");
   const [phone, setPhone] = useState("");
   const [gift, setGift] = useState("");
@@ -163,7 +168,6 @@ const App = () => {
   const speeds = useRef([]);
   const r = useRef([]);
   const start = useRef(null);
-
   const action = () => {
     if (isSpinning) return;
     setIsSpinning(true);
@@ -172,10 +176,13 @@ const App = () => {
     setGift("");
     start.current = performance.now();
     const codeLength =
-      winner && winner.data && winner.data.code ? winner.data.code.length : 10;
+      winner && winner?.data && winner?.data?.code
+        ? winner?.data?.code?.length
+        : 10;
+    // console.log(codeLength);
     for (let i = 0; i < codeLength; ++i) {
-      speeds.current[i] = Math.random() + 0.5;
-      r.current[i] = (((Math.random() * 3) | 0) * height) / 3;
+      speeds.current[i] = Math.random() + 3.5;
+      r.current[i] = (((Math.random() * 10) | 0) * height) / 3;
     }
     animate(performance.now());
   };
@@ -187,10 +194,12 @@ const App = () => {
       winner && winner.data && winner.data.code ? winner.data.code.length : 10;
 
     for (let i = 0; i < codeLength; ++i) {
-      reelsRefs.current[i].scrollTop =
-        ((speeds.current[i] / tMax / 2) * (tMax - t) * (tMax - t) +
-          r.current[i]) %
-        height;
+      if (reelsRefs.current[i]) {
+        reelsRefs.current[i].scrollTop =
+          ((speeds.current[i] / tMax / 2) * (tMax - t) * (tMax - t) +
+            r.current[i]) %
+          height;
+      }
     }
     if (t < tMax) {
       requestAnimationFrame(animate);
@@ -199,6 +208,17 @@ const App = () => {
       setMsg(winner?.data?.full_name || winner?.message);
       setPhone(`*******${winner?.data?.phone.slice(-4) || ""}`);
       setGift(winner?.data?.gift || "");
+      if (winner && winner?.data && winner?.data?.code) {
+        setReels(
+          winner?.data?.code
+            ?.split("")
+            ?.map((digit) => [
+              parseInt(digit),
+              parseInt(digit),
+              parseInt(digit),
+            ])
+        );
+      }
     }
   };
 
@@ -231,6 +251,18 @@ const App = () => {
     setShowConfetti(false);
     setIsStart(true);
     mutate();
+    setReels( [
+      [1, 3, 5, 6, 7, 9],
+      [2, 4, 6, 7, 8, 5],
+      [3, 6, 7, 9, 4],
+      [4, 5, 7, 0, 1],
+      [5, 7, 8, 2, 6],
+      [6, 7, 9, 1, 3],
+      [0, 3, 4, 7, 8],
+      [1, 4, 7, 8, 2, 0],
+      [2, 5, 7, 9, 1, 4],
+      [0, 3, 6, 7, 5],
+    ]);
   };
   return (
     <>
